@@ -1,7 +1,5 @@
 package com.ximenes.challangeranotaai.services;
 
-import com.ximenes.challangeranotaai.domain.category.Category;
-import com.ximenes.challangeranotaai.domain.category.CategoryDTO;
 import com.ximenes.challangeranotaai.domain.category.exceptions.CategoryNotFoundException;
 import com.ximenes.challangeranotaai.domain.product.Product;
 import com.ximenes.challangeranotaai.domain.product.ProductDTO;
@@ -20,13 +18,12 @@ public class ProductService {
     private final ProductRepository repository;
     private final AwsSnsService snsService;
     public Product insert(ProductDTO productData){
-        Category category = this.categoryService
+         this.categoryService
                 .getById(productData.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
         Product newProduct = new Product(productData);
-        newProduct.setCategory(category);
         this.repository.save(newProduct);
-        this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+        this.snsService.publish(new MessageDTO(newProduct.toString()));
         return newProduct;
     }
     public List<Product> getAll(){return this.repository.findAll();}
@@ -37,12 +34,13 @@ public class ProductService {
         if(productData.categoryId() != null){
         this.categoryService.getById(productData.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
+                product.setCategory(productData.categoryId());
         }
         if(!productData.title().isEmpty()) product.setTitle(productData.title());
         if(!productData.description().isEmpty()) product.setDescription(productData.description());
         if(!(productData.price() == null)) product.setPrice(productData.price());
         this.repository.save(product);
-        this.snsService.publish(new MessageDTO(product.getOwnerId()));
+        this.snsService.publish(new MessageDTO(product.toString()));
         return product;
     }
     public void delete(String id){
@@ -50,6 +48,7 @@ public class ProductService {
                 .findById(id)
                 .orElseThrow(ProductNotFoundException::new);
         this.repository.delete(product);
+        this.snsService.publish(new MessageDTO("delete-produto"));
     }
 
 }

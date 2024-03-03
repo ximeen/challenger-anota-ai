@@ -1,6 +1,7 @@
 package com.ximenes.challangeranotaai.domain.category;
 
 import lombok.*;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,5 +21,16 @@ public class Category {
         this.title = categoryDTO.title();
         this.description = categoryDTO.description();
         this.ownerID = categoryDTO.ownerID();
+    }
+
+    @Override
+    public String toString(){
+        JSONObject json = new JSONObject();
+        json.put("title", this.title);
+        json.put("description", this.description);
+        json.put("id", this.id);
+        json.put("ownerID", this.ownerID);
+        json.put("type", "category");
+        return json.toString();
     }
 }

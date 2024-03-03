@@ -1,10 +1,8 @@
 package com.ximenes.challangeranotaai.config.aws;
 
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.Topic;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +22,8 @@ public class AwsSnsConfig {
     @Bean
     public AmazonSNS amazonSnsBuilder(){
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
-        return AmazonSNSClientBuilder.standard()
+        return AmazonSNSClientBuilder
+                .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
                 .build();
