@@ -18,7 +18,6 @@ The Microservice was developed for my [Youtube Channel](https://youtu.be/a3tPHH8
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Database](#database)
-- [Contributing](#contributing)
 
 ## Installation
 
